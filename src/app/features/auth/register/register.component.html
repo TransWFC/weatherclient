@@ -1,0 +1,13 @@
+<h2>Register User</h2>
+<input [(ngModel)]="username" placeholder="UserName">
+<input [(ngModel)]="email" placeholder="Email">
+<input [(ngModel)]="password" placeholder="Password" type="password">
+<input [(ngModel)]="confirmPassword" placeholder="Confirm Password" type="password">
+<select [(ngModel)]="role">
+  <option value="User">User</option>
+  <option value="Admin">Admin</option>
+</select>
+<button (click)="register()">Register</button>
+<p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+<p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+

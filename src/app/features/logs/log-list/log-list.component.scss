@@ -1,0 +1,31 @@
+.logs-container {
+  padding: 20px;
+  
+  .filters {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  .mat-column-timestamp {
+    width: 200px;
+  }
+
+  .mat-column-level {
+    width: 100px;
+  }
+
+  .mat-column-username {
+    width: 150px;
+  }
+
+  td.information { color: blue; }
+  td.warning { color: orange; }
+  td.error { color: red; }
+  td.debug { color: gray; }
+}

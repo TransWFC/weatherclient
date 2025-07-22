@@ -1,0 +1,58 @@
+<div class="logs-container">
+  <h2>Registros del Sistema</h2>
+  
+  <div class="filters">
+    <mat-form-field>
+      <mat-label>Nivel</mat-label>
+      <mat-select [(ngModel)]="selectedLevel" (selectionChange)="loadLogs()">
+        <mat-option [value]="''">Todos</mat-option>
+        <mat-option *ngFor="let level of logLevels" [value]="level">
+          {{level}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Fecha inicio</mat-label>
+      <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate">
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Fecha fin</mat-label>
+      <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate">
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="loadLogs()">
+      Filtrar
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="logs" class="mat-elevation-z8">
+    <ng-container matColumnDef="timestamp">
+      <th mat-header-cell *matHeaderCellDef> Fecha </th>
+      <td mat-cell *matCellDef="let log"> {{log.timestamp | date:'medium'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="level">
+      <th mat-header-cell *matHeaderCellDef> Nivel </th>
+      <td mat-cell *matCellDef="let log" [ngClass]="log.level.toLowerCase()"> {{log.level}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="message">
+      <th mat-header-cell *matHeaderCellDef> Mensaje </th>
+      <td mat-cell *matCellDef="let log"> {{log.message}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef> Usuario </th>
+      <td mat-cell *matCellDef="let log"> {{log.username}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
