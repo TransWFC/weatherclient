@@ -3,10 +3,10 @@ export interface LogEntry {
     timestamp: Date;
     level: string;
     message: string;
-    /* exception?: string;
+    exception?: string;
     username?: string;
     action?: string;
-    controller?: string; */
+    controller?: string;
 }
 
 // Enum para los niveles de log

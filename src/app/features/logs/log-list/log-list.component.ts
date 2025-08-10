@@ -14,25 +14,57 @@ export class LogListComponent implements OnInit {
   startDate?: Date;
   endDate?: Date;
   displayedColumns: string[] = ['timestamp', 'level', 'message', 'username'];
+  isLoading = false;
+  errorMessage = '';
 
   constructor(private logService: LogService) { }
 
   ngOnInit(): void {
-    console.log('LogListComponent initialized'); // Para debugging
+    console.log('LogListComponent initialized');
     this.loadLogs();
   }
 
   loadLogs(): void {
-    console.log('Loading logs...'); // Para debugging
-    this.logService.getRecentLogs()
-      .subscribe({
-        next: (logs) => {
-          console.log('Logs received:', logs); // Para debugging
-          this.logs = logs;
-        },
-        error: (error) => {
-          console.error('Error loading logs:', error);
-        }
-      });
+    this.isLoading = true;
+    this.errorMessage = '';
+    
+    if (this.selectedLevel || this.startDate || this.endDate) {
+      // Use filtered logs
+      this.logService.getFilteredLogs(this.selectedLevel, this.startDate, this.endDate)
+        .subscribe({
+          next: (logs) => {
+            console.log('Filtered logs received:', logs);
+            this.logs = logs;
+            this.isLoading = false;
+          },
+          error: (error) => {
+            console.error('Error loading filtered logs:', error);
+            this.errorMessage = 'Error al cargar los registros filtrados';
+            this.isLoading = false;
+          }
+        });
+    } else {
+      // Use recent logs
+      this.logService.getRecentLogs()
+        .subscribe({
+          next: (logs) => {
+            console.log('Recent logs received:', logs);
+            this.logs = logs;
+            this.isLoading = false;
+          },
+          error: (error) => {
+            console.error('Error loading logs:', error);
+            this.errorMessage = 'Error al cargar los registros';
+            this.isLoading = false;
+          }
+        });
+    }
+  }
+
+  clearFilters(): void {
+    this.selectedLevel = '';
+    this.startDate = undefined;
+    this.endDate = undefined;
+    this.loadLogs();
   }
 }

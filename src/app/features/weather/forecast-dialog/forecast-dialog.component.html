@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>{{ getTitle() }}</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Fecha</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="forecast.date" [disabled]="isReadOnly">
+    <mat-datepicker-toggle matSuffix [for]="picker" [disabled]="isReadOnly"></mat-datepicker-toggle>
+    <mat-datepicker #picker disabled="false"></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Temperatura (°C)</mat-label>
+    <input matInput type="number" [(ngModel)]="forecast.temperatureC" 
+           (ngModelChange)="updateTemperatureF()" [disabled]="isReadOnly">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Temperatura (°F)</mat-label>
+    <input matInput type="number" [(ngModel)]="forecast.temperatureF" [disabled]="true">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Resumen</mat-label>
+    <input matInput [(ngModel)]="forecast.summary" [disabled]="isReadOnly">
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onSave()" 
+          *ngIf="mode !== 'view'">Guardar</button>
+</mat-dialog-actions>

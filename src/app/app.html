@@ -1,8 +1,24 @@
-<nav>
-  <a routerLink="/auth/login">Login</a> |
-  <a routerLink="/auth/register">Register</a> |
-  <a routerLink="/forecast">Forecast</a>
-  <a routerLinnk=/log">Logs</a>
-</nav>
-<hr>
-<router-outlet></router-outlet>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Weather Forecast App</span>
+    <span class="spacer"></span>
+    <nav>
+      <button mat-button routerLink="/auth/login" routerLinkActive="active" 
+              *ngIf="!isLoggedIn()">Login</button>
+      <button mat-button routerLink="/auth/register" routerLinkActive="active" 
+              *ngIf="!isLoggedIn()">Register</button>
+      <button mat-button routerLink="/forecast" routerLinkActive="active" 
+              *ngIf="isLoggedIn()">Forecast</button>
+      <button mat-button routerLink="/logs" routerLinkActive="active" 
+              *ngIf="isLoggedIn() && isAdmin()">Logs</button>
+      <button mat-button (click)="logout()" *ngIf="isLoggedIn()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </nav>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

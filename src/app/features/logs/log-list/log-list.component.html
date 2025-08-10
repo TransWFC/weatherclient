@@ -4,7 +4,7 @@
   <div class="filters">
     <mat-form-field>
       <mat-label>Nivel</mat-label>
-      <mat-select [(ngModel)]="selectedLevel" (selectionChange)="loadLogs()">
+      <mat-select [(ngModel)]="selectedLevel">
         <mat-option [value]="''">Todos</mat-option>
         <mat-option *ngFor="let level of logLevels" [value]="level">
           {{level}}
@@ -26,12 +26,27 @@
       <mat-datepicker #endPicker></mat-datepicker>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" (click)="loadLogs()">
+    <button mat-raised-button color="primary" (click)="loadLogs()" [disabled]="isLoading">
+      <mat-icon *ngIf="isLoading">refresh</mat-icon>
       Filtrar
+    </button>
+
+    <button mat-button (click)="clearFilters()" [disabled]="isLoading">
+      Limpiar Filtros
     </button>
   </div>
 
-  <table mat-table [dataSource]="logs" class="mat-elevation-z8">
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Cargando registros...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-container">
+    <mat-icon color="warn">error</mat-icon>
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <table mat-table [dataSource]="logs" class="mat-elevation-z8" *ngIf="!isLoading && !errorMessage">
     <ng-container matColumnDef="timestamp">
       <th mat-header-cell *matHeaderCellDef> Fecha </th>
       <td mat-cell *matCellDef="let log"> {{log.timestamp | date:'medium'}} </td>
@@ -49,10 +64,14 @@
 
     <ng-container matColumnDef="username">
       <th mat-header-cell *matHeaderCellDef> Usuario </th>
-      <td mat-cell *matCellDef="let log"> {{log.username}} </td>
+      <td mat-cell *matCellDef="let log"> {{log.username || 'Sistema'}} </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
+  <div *ngIf="!isLoading && !errorMessage && logs.length === 0" class="no-data">
+    <p>No se encontraron registros con los filtros aplicados.</p>
+  </div>
 </div>

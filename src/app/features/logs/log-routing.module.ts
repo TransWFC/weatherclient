@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LogListComponent } from './log-list/log-list.component';
 
 const routes: Routes = [
   {
-    path: 'logs',
-    loadChildren: () =>
-      import('./log-list/log-list.component').then(m => m.LogListComponent),
+    path: '',
+    component: LogListComponent
   }
 ];
 
